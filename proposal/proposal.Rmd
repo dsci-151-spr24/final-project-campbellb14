@@ -1,6 +1,6 @@
 ---
-title: "Project proposal"
-author: "Your name"
+title: "Project Proposal"
+author: "Campbell Bowers"
 output: github_document
 ---
 
@@ -9,15 +9,62 @@ library(tidyverse)
 library(broom)
 ```
 
+```{r}
+library(tidyverse)
+library(janitor)
+
+cbp_resp <- bind_rows(
+  read_csv("https://www.cbp.gov/sites/default/files/assets/documents/2023-Nov/nationwide-encounters-fy20-fy23-aor.csv"),
+  read_csv("https://www.cbp.gov/sites/default/files/2024-10/nationwide-encounters-fy21-fy24-aor.csv")
+) |>
+  janitor::clean_names() |>
+  unique()
+```
+
 ## 1. Introduction
 
-
+The purpose of this project is to investigate the trends in encounters of different demographic groups by U.S. Customs and Border Protection (CBP) over time. The research question guiding this study is: What demographic groups are most frequently encountered, and how has this changed over time? My data is on US Customs and Border Protection Encounters. It is titled cbp_resp. I found it on tidytuesday. The data is extracted from live Customs and Border Protection (CBP) systems and data sources. There are `r nrow(cbp_resp)` rows and `r ncol(cbp_resp)` columns. The variables are fiscal year, month grouping, month abbv, component, land border region, area of responsibility, aor abbv, demographic, citizenship, title of authority, encounter type, and encounter count. The dataset provides a comprehensive look at CBP encounters across different demographic groups and allows for an analysis of historical trends.
 
 ## 2. Data
 
+US Customs and Border Protection Encounter Data: 
 
+- `fiscal_year`: The fiscal year the encounter took place.
+- `month_grouping`: Allows for comparisons between completed FY months vs. those remaining.
+- `month_abbv`: The month the encounter took place (abbreviated, eg "APR").
+- `component`: Which part of CBP was involved in the encounter ("Office of Field Operations" or "U.S. Border Patrol").
+- `land_border_region`: The border region in which the encounter occurred ("Northern Land Border", "Southwest Land Border", or "Other"); border regions are defined by each component. Nationwide numbers are calculated by adding together Northern Land Border, Southwest Land Border, and Other regions.
+- `area_of_responsibility`: The field office or sector where the encounter occurred.
+- `aor_abbv`: The field office or sector where the encounter occurred (abbreviated).
+- `demographic`: Categories under which individuals were encountered based on factors such as age, admissibility, and relationship (FMUA = Individuals in a Family Unit; UC = Unaccompanied Children).
+- `citizenship`: Citizenship of the individual encountered.
+- `title_of_authority`: The authority under which the noncitizen was processed (Title 8: The standard U.S. immigration law governing the processing of migrants, including deportations, asylum procedures, and penalties for unauthorized border crossings. Title 42: A public health order used during the COVID-19 pandemic to rapidly expel migrants at the border without standard immigration processing, citing health concerns.).
+- `encounter_type`: The category of encounter based on Title of Authority and component (Title 8 for USBP = Apprehensions; Title 8 for OFO = Inadmissibles; Title 42 = Expulsions).
+- `encounter_count`: The number of individuals encountered.
+
+```{r}
+library(dplyr)  
+library(skimr)  
+
+if (!dir.exists("data")) {
+    dir.create("data") }
+
+num_rows <- nrow(cbp_resp)
+num_cols <- ncol(cbp_resp)
+
+
+codebook <- paste0(names(cbp_resp), ": ", sapply(cbp_resp, class), collapse = "\n")
+
+print(glimpse(cbp_resp))
+```
 
 ## 3. Data analysis plan
 
+- **Outcome Variable (Y)**: encounter_count (the number of individuals encountered).
+- **Predictor Variables (X)**: fiscal_year (to analyze trends over time), demographic (to examine which groups are most frequently encountered), land_border_region (to analyze regional differences).
+- **Comparison Groups**: Different demographic groups over multiple fiscal_years and regional differences across land_border_region.
+- **Preliminary Exploratory Data Analysis**: Summary statistics of encounter_count by demographic group, trends of encounter_count over fiscal_year, and distribution of encounters across land_border_region. 
+- **Methods/Visualizations**: Multiple visualizations such as... Line Plot: Encounter trends for each demographic group over time. Stacked Bar Chart: Proportion of encounters by demographic group per year. Box Plot: Distribution of encounter counts by demographic group. 
+- **Expected Results**: Identifying which demographic groups have the highest number of encounters. Observing trends in encounters over time, particularly in relation to policy changes. Determining whether certain demographic groups are more affected in specific border regions.
 
 
