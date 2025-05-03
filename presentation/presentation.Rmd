@@ -114,6 +114,12 @@ ggplot(cbp_resp, aes(x = land_border_region, y = encounter_count, fill = land_bo
 
 class: inverse, center, middle
 
+# Limitations
+
+---
+
+class: inverse, center, middle
+
 # Conclusion
 
 
