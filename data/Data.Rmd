@@ -1,0 +1,62 @@
+```{r}
+library(tidyverse)
+library(janitor)
+
+cbp_resp <- bind_rows(
+  read_csv("https://www.cbp.gov/sites/default/files/assets/documents/2023-Nov/nationwide-encounters-fy20-fy23-aor.csv"),
+  read_csv("https://www.cbp.gov/sites/default/files/2024-10/nationwide-encounters-fy21-fy24-aor.csv")
+) |>
+  janitor::clean_names() |>
+  unique()
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
+
+```{r}
+library(dplyr)
+cbp_resp %>% 
+  group_by(demographic) %>% 
+  summarise(mean_encounters = mean(encounter_count, na.rm = TRUE),
+            total_encounters = sum(encounter_count, na.rm = TRUE),
+            count = n())
+```
+
+```{r}
+demographic_trends <- cbp_resp %>%
+  group_by(fiscal_year, demographic) %>%
+  summarize(total_encounters = sum(encounter_count, na.rm = TRUE)) %>%
+  ungroup()
+```
+
+```{r}
+ggplot(demographic_trends, aes(x = fiscal_year, y = total_encounters, group = demographic, color = demographic)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  labs(title = "Trends in CBP Encounters by Demographic Group",
+       x = "Fiscal Year",
+       y = "Total Encounters",
+       color = "Demographic Group")
+```
+
+```{r}
+ggplot(demographic_trends, aes(x = fiscal_year, y = total_encounters, fill = demographic)) +
+  geom_bar(stat = "identity", position = "fill") +
+  labs(title = "Proportion of Encounters by Demographic Group",
+       x = "Fiscal Year",
+       y = "Proportion",
+       fill = "Demographic Group") +
+  scale_y_continuous(labels = scales::percent)
+```
+
+```{r}
+ggplot(cbp_resp, aes(x = land_border_region, y = encounter_count, fill = land_border_region)) +
+  geom_boxplot() +
+  labs(title = "Distribution of Encounters by Border Region",
+       x = "Land Border Region",
+       y = "Encounter Count") 
+```
+
