@@ -18,6 +18,8 @@ Next, I examined changes over time using line plots of encounter trends by demog
 
 In addition to temporal analysis, I investigated spatial patterns through box plots of encounter counts across different land border regions. The Southwest Land Border clearly dominated in volume, with broader variation in encounter counts.
 
+There are some limitations to this project. First, the data lacks policy, economic, or environmental indicators that may explain fluctuations (e.g., U.S. policy changes, migration crises, or climate events). Next, the dataset does not cover the most recent fiscal year or reflect rapidly evolving border policies. Also, “Other” categories in variables like land_border_region can obscure specific geographic insights.
+
 This analysis suggests a few key findings. First, encounter patterns are heavily influenced by both time and geography, with clear peaks in certain years and at specific regions. 2021-2023 was a high traffic time at the U.S. borders and the Southwest land border consistently being the most busy. Second, different demographic groups experience the border in markedly different ways. There are many more single adults and family units than children crossing the border.
 
 While this summary only scratches the surface of the data, it highlights the value of temporal and regional analysis in understanding CBP encounter dynamics. Going forward, this work could be extended by linking policy timelines or socioeconomic data from countries of origin to better explain these trends. 
