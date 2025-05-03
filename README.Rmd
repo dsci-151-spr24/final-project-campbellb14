@@ -1,26 +1,37 @@
 ---
-title: Project title
-author: by your name
+title: "Demographic Trends in U.S. Border Encounters"
+author: "Campbell Bowers"
 output: github_document
 ---
 
-## Summary
+***Summary***
 
-Write-up of your project and findings go here. 
-Think of this as the text of your presentation. 
-The length should be roughly 5 minutes when read out loud.
-Although pacing varies, a 5-minute speech is roughly 750 words. 
-To use the word count addin, select the text you want to count the words of (probably this is the 
-Summary section of this document, go to Addins, and select the `Word count` addin).
-This addin counts words using two different algorithms, but the results should be similar and as long as you're in the ballpark of 750 words, you're good! 
-The addin will ignore code chunks and only count the words in prose.
+This project analyzes U.S. Customs and Border Protection (CBP) data to explore patterns in border encounters by demographic group over time and across regions. The dataset, cbp_resp.csv, includes detailed records of encounters categorized by CBP component, region, demographic type, and legal authority. My central research questions are: Which demographic groups are most frequently encountered at the border? How have these encounters changed over time and by region? 
 
-You can also load your data here and present any analysis results / plots, but I strongly urge you to keep that to a minimum (maybe only the most important graphic, if you have one you can choose). 
-And make sure to hide your code with  `echo = FALSE` unless the point you are trying to make is about the code itself.
-Your results with proper output and graphics go in your presentation, this space is for a brief summary of your project.
+The dataset contains detailed records of encounters at U.S. land borders, categorized by CBP components (Office of Field Operations and U.S. Border Patrol), region (Southwest, Northern, and Other), demographics (such as unaccompanied children and family units), and titles of authority (Title 8 and Title 42). Each record also includes the number of individuals encountered, allowing me to quantify the magnitude of each trend.
 
-```{r load-data, echo = FALSE}
-# load data here, if you like
+To answer these questions, I used a combination of summary statistics and visualizations. I focused on encounter_count as my outcome variable and considered fiscal_year, demographic, and land_border_region as my primary predictors. My methodology included line plots to capture time trends, box plots for regional distribution analysis, and summary tables to compare total and average encounters by group.
+
+To begin, I computed summary statistics to understand which demographic groups had the highest total encounters. Single Adults had the highest total number of encounters at 7,702,373, with an average of 189.35 encounters per observation. This suggests that adults traveling alone represent the most consistently encountered demographic at the border. Family Units (FMUA) followed closely, with a total of 3,162,850 encounters and a slightly lower mean of 184.34 per observation, indicating a large volume of grouped family encounters. Unaccompanied Children (UC / Single Minors) showed a total of 583,645 encounters and a mean of 74.09, reflecting sporadic but significant spikes in minor-only migration patterns. Accompanied Minors, by contrast, had the lowest totals: 23,341 encounters and an average of 7.53 per observation, suggesting that this group is relatively rare or less frequently recorded as a distinct category.
+
+Next, I examined changes over time using line plots of encounter trends by demographic group across fiscal years. This revealed key temporal shifts, such as significant increases in encounters involving single adults from 2021-2022 and a significant increase in encounters involving family units from 2021-2023.
+
+In addition to temporal analysis, I investigated spatial patterns through box plots of encounter counts across different land border regions. The Southwest Land Border clearly dominated in volume, with broader variation in encounter counts.
+
+This analysis suggests a few key findings. First, encounter patterns are heavily influenced by both time and geography, with clear peaks in certain years and at specific regions. 2021-2023 was a high traffic time at the U.S. borders and the Southwest land border consistently being the most busy. Second, different demographic groups experience the border in markedly different ways. There are many more single adults and family units than children crossing the border.
+
+While this summary only scratches the surface of the data, it highlights the value of temporal and regional analysis in understanding CBP encounter dynamics. Going forward, this work could be extended by linking policy timelines or socioeconomic data from countries of origin to better explain these trends. 
+
+```{r load-data, echo = FALSE, message = FALSE}
+library(tidyverse)
+library(janitor)
+
+cbp_resp <- bind_rows(
+  read_csv("https://www.cbp.gov/sites/default/files/assets/documents/2023-Nov/nationwide-encounters-fy20-fy23-aor.csv"),
+  read_csv("https://www.cbp.gov/sites/default/files/2024-10/nationwide-encounters-fy21-fy24-aor.csv")
+) |>
+  janitor::clean_names() |>
+  unique()
 ```
 
 ## Presentation
@@ -29,11 +40,9 @@ My presentation can be found [here](presentation/presentation.html).
 
 ## Data 
 
-Include a citation for your data here. 
-See http://libraryguides.vu.edu.au/c.php?g=386501&p=4347840 for guidance on proper citation for datasets. 
-If you got your data off the web, make sure to note the retrieval date.
+TidyTuesday Project. (2023, May 2). CBP Encounters (cbp_resp.csv) [Data set]. Retrieved from https://github.com/rfordatascience/tidytuesday/tree/master/data/2023/2023-05-02
 
 ## References
 
-List any references here. You should, at a minimum, list your data source.
+TidyTuesday Project.
 
